@@ -143,12 +143,18 @@ chatSchema.methods.removeAdmin = function(userId) {
 
 // Method to check if user is admin
 chatSchema.methods.isUserAdmin = function(userId) {
-  return this.admins.some(admin => admin.toString() === userId.toString());
+  return this.admins.some(admin => {
+    const adminId = admin._id ? admin._id.toString() : admin.toString();
+    return adminId === userId.toString();
+  });
 };
 
 // Method to check if user is participant
 chatSchema.methods.isUserParticipant = function(userId) {
-  return this.participants.some(participant => participant.toString() === userId.toString());
+  return this.participants.some(participant => {
+    const participantId = participant._id ? participant._id.toString() : participant.toString();
+    return participantId === userId.toString();
+  });
 };
 
 // Method to update last activity

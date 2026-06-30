@@ -81,7 +81,7 @@ const searchLimiter = rateLimit({
 // Registration rate limiter
 const registerLimiter = rateLimit({
   windowMs: 60 * 60 * 1000, // 1 hour
-  max: 3, // limit each IP to 3 registration attempts per hour
+  max: process.env.NODE_ENV === 'test' ? 1000 : 3, // limit each IP to 3 registration attempts per hour
   message: {
     success: false,
     message: 'Too many registration attempts, please try again after an hour.',
@@ -89,6 +89,7 @@ const registerLimiter = rateLimit({
   },
   standardHeaders: true,
   legacyHeaders: false,
+  skip: () => process.env.NODE_ENV === 'test'
 });
 
 // Password reset rate limiter

@@ -17,7 +17,7 @@ const {
 } = require('../controllers/authController');
 
 const { authenticate } = require('../middleware/auth');
-const { authLimiter, registerLimiter, passwordResetLimiter } = require('../middleware/rateLimiter');
+const { authLimiter, registerLimiter } = require('../middleware/rateLimiter');
 const {
   validateUserRegistration,
   validateUserLogin,
@@ -35,6 +35,7 @@ router.get('/google',
 );
 
 router.get('/google/callback',
+  authLimiter,
   passport.authenticate('google', { session: false }),
   googleCallback
 );

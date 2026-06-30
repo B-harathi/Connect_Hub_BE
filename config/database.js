@@ -2,10 +2,7 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    const conn = await mongoose.connect(process.env.MONGODB_URI);
 
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
     
@@ -20,13 +17,6 @@ const connectDB = async () => {
 
     mongoose.connection.on('disconnected', () => {
       console.log('📤 Mongoose disconnected');
-    });
-
-    // Handle app termination
-    process.on('SIGINT', async () => {
-      await mongoose.connection.close();
-      console.log('🔒 MongoDB connection closed due to app termination');
-      process.exit(0);
     });
 
   } catch (error) {
